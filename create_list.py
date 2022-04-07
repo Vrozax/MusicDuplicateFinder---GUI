@@ -1,4 +1,6 @@
 from tinytag import TinyTag
+
+
 class create_list:
     def create_dictionary_music(self, list_files):
         dict_music = {}
@@ -51,8 +53,12 @@ class create_list:
 
         return list_duplicates
 
-    def compare_music(self, source):
+    def compare_music(self, source, progresss):
         data_to_save = []
+        counter = 1
+        length_source = len(source)
+        progresss['text']="Status:Work in progress."
+        print(length_source)
         for path in source:
             try:
 
@@ -65,7 +71,11 @@ class create_list:
                 data = [path, artist, title, bit_rate, file_size]
                 #print("data", data)
                 data_to_save.append(data)
+                counter += 1
+                progresss['value'] = (counter/length_source)*100
+                
 
             except:
                 print("No Data")
+            progresss['text']="Status:Ready to next check."
         return data_to_save
