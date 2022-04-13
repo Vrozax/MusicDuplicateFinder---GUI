@@ -4,10 +4,13 @@ from tkinter import *
 from tkinter import filedialog, Tk, Label, Button
 from tkinter import ttk
 from pathlib import Path
+from turtle import left
 from unittest import result
 from search_dir import *
 from create_list import *
 from threading import Thread
+import subprocess, sys
+from tkinter import messagebox
 win = tk.Tk()
 # global variables my_table, selected_folder_to_compare,pb
 
@@ -47,20 +50,28 @@ def gui_start():
             result = duplicate.print_duplicates(chceck_duplicate)
             save_data = duplicate.compare_music(result, progress)
             insert_values_to_table(save_data)
+            messagebox.showinfo("showinfo", "I'm done 😃, see the results.")
 
     def select_folder():
         # win.withdraw()
         #global variable
         global selected_folder_to_compare
         selected_folder_to_compare = filedialog.askdirectory()
-        selected_folder_bt['text'] = "selected folder:" + \
-            str(selected_folder_to_compare)
+        name=os.path.basename(selected_folder_to_compare)
+        selected_folder_text['text'] = "Selected folder:" + \
+            str(name)
 
     def OnDoubleClick(event):
         item = my_table.identify('item', event.x, event.y)
 
         path = os.path.realpath(my_table.item(item, "value")[5])
-        os.startfile(path)
+        if sys.platform == "win32":
+            os.startfile(path)
+        else:
+            opener = "open" if sys.platform == "darwin" else "xdg-open"
+            subprocess.call([opener, path])
+
+        #os.startfile(path)
         
     def create_table():
         global my_table
@@ -103,27 +114,61 @@ def gui_start():
 
     project_name = "MusicDuplicateFinder"
 
+    #transparent icon
+    win.iconbitmap('resources/favicon.ico')
+ 
+    #title
     win.title(project_name)
+
+    #window size
     win.resizable(0, 0)
     win.minsize(300, 300)
-    #win.maxsize(400, 300)
+    
 
     title = tk.Label(win, text=project_name, font=30, fg="blue")
     title.pack()
 
-    selected_folder_bt = ttk.Button(
-        win, text="select folder", command=select_folder)
-    # start_thread=Thread(target=start).start()
-    start_bt = ttk.Button(win, text="start", command=threading)
-    selected_folder_bt.pack()
-    start_bt.pack()
+    #label frame
+    label_frame= LabelFrame(win, text="Menu")
+    label_frame.pack(side = LEFT, anchor=NW)
 
-    result_frame = tk.Frame(master=win)
+
+    selected_folder_bt = ttk.Button(
+        label_frame, text="select folder", command=select_folder,width=10)
+    selected_folder_text = tk.Label(label_frame, text="Selected folder:None")
+    start_bt = ttk.Button(label_frame, text="start", command=threading,width=10)
+
+
+
+    #labelFrame statistic
+
+
+
+
+    selected_folder_text.pack(side=LEFT,anchor=NE)
+
+    label_frame_statistic= LabelFrame(label_frame, text="Statistic")
+    
+    label_statistic = tk.Label(label_frame_statistic, text="Test")
+    label_statistic.pack(side=tk.LEFT,anchor=NW)
+
+
+
+
+    selected_folder_bt.pack(anchor=W)
+    start_bt.pack(anchor=W)
+    label_frame_statistic.place(width=130,height=270,x=0,y=50)
+
+    
+    
+    
+    #table result
+    result_frame = tk.Frame(master=label_frame)
     label = tk.Label(master=result_frame, text="Result:")
     progress = ttk.Label(master=result_frame, text="Status:Not started.")
-    label.pack()
-    progress.pack()
-    result_frame.pack()
+    label.pack(anchor=W)
+    progress.pack(anchor=W)
+    result_frame.pack(side=BOTTOM,anchor=S)
 
     create_table()
 
