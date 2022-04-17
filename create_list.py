@@ -57,7 +57,8 @@ class create_list:
         data_to_save = []
         counter = 1
         length_source = len(source)
-        progresss['text']="Status:Work in progress."
+        progresss['text'] = "Status:Work in progress."
+
         print(length_source)
         for path in source:
             try:
@@ -73,9 +74,8 @@ class create_list:
                 data_to_save.append(data)
                 counter += 1
                 progresss['value'] = (counter/length_source)*100
-                
 
             except:
                 print("No Data")
-            progresss['text']="Status:Ready to next check."
+            progresss['text'] = "Status:Ready to next check."
         return data_to_save

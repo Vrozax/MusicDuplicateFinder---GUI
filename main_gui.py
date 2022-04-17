@@ -45,13 +45,14 @@ def gui_start():
         search_folder = search_dir()
         if selected_folder_to_compare != None and selected_folder_to_compare != "":
             list_files = search_folder.search_files(
-                str(selected_folder_to_compare))
+                str(selected_folder_to_compare), label_statistic_files)
             duplicate = create_list()
             chceck_duplicate = duplicate.create_dictionary_music(list_files)
             result = duplicate.print_duplicates(chceck_duplicate)
             save_data = duplicate.compare_music(result, progress)
             insert_values_to_table(save_data)
-            messagebox.showinfo("showinfo", "I'm done 😃, see the results.")
+            messagebox.showinfo("Notification", "I'm done 😃, see the results.")
+            label_statistic_found_duplicates["text"] = "Duplicates" + str(len(save_data))
 
     def select_folder():
         # win.withdraw()
@@ -60,7 +61,7 @@ def gui_start():
         selected_folder_to_compare = filedialog.askdirectory()
         name = os.path.basename(selected_folder_to_compare)
         selected_folder_text['text'] = "Selected folder:" + \
-            str(name)
+            str(name[0:6])+"..."
 
     def OnDoubleClick(event):
         item = my_table.identify('item', event.x, event.y)
@@ -133,10 +134,10 @@ def gui_start():
     label_frame.pack(side=LEFT, anchor=NW)
 
     selected_folder_bt = ttk.Button(
-        label_frame, text="select folder", command=select_folder, width=10)
+        label_frame, text="select folder", command=select_folder, width=12)
     selected_folder_text = tk.Label(label_frame, text="Selected folder:None")
     start_bt = ttk.Button(label_frame, text="start",
-                          command=threading, width=10)
+                          command=threading, width=12)
 
     # labelFrame statistic
 
@@ -144,17 +145,24 @@ def gui_start():
 
     label_frame_statistic = LabelFrame(label_frame, text="Statistic")
 
-    label_statistic = tk.Label(label_frame_statistic, text="Test")
-    label_statistic.pack(side=tk.LEFT, anchor=NW)
+    label_statistic_files = tk.Label(label_frame_statistic, text="Files:")
+    label_statistic_found_duplicates = tk.Label(
+        label_frame_statistic, text="Duplicates:")
 
+    label_statistic_files.pack(anchor=W)
+    label_statistic_found_duplicates.pack(anchor=W)
+    label_frame_statistic.place(width=130, height=270, x=0, y=50)
+
+    # pack buttons
     selected_folder_bt.pack(anchor=W)
     start_bt.pack(anchor=W)
-    label_frame_statistic.place(width=130, height=270, x=0, y=50)
 
     # table result
     result_frame = tk.Frame(master=label_frame)
     label = tk.Label(master=result_frame, text="Result:")
     progress = ttk.Label(master=result_frame, text="Status:Not started.")
+
+    # pack
     label.pack(anchor=W)
     progress.pack(anchor=W)
     result_frame.pack(side=BOTTOM, anchor=S)
