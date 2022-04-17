@@ -5,8 +5,22 @@ import os
 
 
 class search_dir:
-    def search_files(self, pathFolder):
-        list_folders = list_dirs(pathFolder)
+    global list_folders_to_check
+
+    def save_folders(self, list_folders_to_check, start_folder):
+        list_folders = list_dirs(start_folder)
+
+        for folder in list_folders:
+
+            list_folders_to_check.append(str(start_folder+"/"+folder))
+            self.save_folders(list_folders_to_check, start_folder+"/"+folder)
+
+    def search_files(self, pathFolder, label_statistic_files):
+        list_folders_to_check = []
+
+        #list_folders = list_dirs(pathFolder)
+
+        self.save_folders(list_folders_to_check, pathFolder)
 
         list_files = []
         files_list = [".mp3", ".flac", ".wav"]
@@ -19,12 +33,12 @@ class search_dir:
             except:
                 print(f"Folder {pathFolder} not exist")
 
-        for folder in list_folders:
+        for folder in list_folders_to_check:
             for fileType in files_list:
 
                 try:
                     # "**/*"+fileType
-                    for file in glob.glob(pathFolder +"/" +folder + "/*" + fileType, recursive=True):
+                    for file in glob.glob(folder + "/*" + fileType, recursive=True):
 
                         list_files.append(file)
                 except:
@@ -33,7 +47,7 @@ class search_dir:
         # create data about file
         complete_data = create_list.create_list()
         result = complete_data.create_list_music(list_files)
-
+        label_statistic_files["text"] = "Files:" + str(len(result))
         return result
 
 
