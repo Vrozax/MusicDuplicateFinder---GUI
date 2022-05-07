@@ -16,6 +16,7 @@ win = tk.Tk()
 # global variables my_table, selected_folder_to_compare,pb
 
 
+
 def gui_start():
     global list_files
 
@@ -52,7 +53,8 @@ def gui_start():
             save_data = duplicate.compare_music(result, progress)
             insert_values_to_table(save_data)
             messagebox.showinfo("Notification", "I'm done 😃, see the results.")
-            label_statistic_found_duplicates["text"] = "Duplicates" + str(len(save_data))
+            label_statistic_found_duplicates["text"] = "Duplicates" + \
+                str(len(save_data))
 
     def select_folder():
         # win.withdraw()
@@ -74,6 +76,17 @@ def gui_start():
             subprocess.call([opener, path])
 
         # os.startfile(path)
+
+    def OnDoubleClickRemove(event):
+
+        item = my_table.identify('item', event.x, event.y)
+
+        path = os.path.realpath(my_table.item(item, "value")[5])
+
+        MsgBox = messagebox.askquestion(
+            "Remove", "Are you sure? To remove file from path:\n"+path)
+        if MsgBox == 'yes':
+            os.remove(path)
 
     def create_table():
         global my_table
@@ -108,8 +121,10 @@ def gui_start():
         my_table.heading("Bitrate", text="Bitrate", anchor=tk.CENTER)
         my_table.heading("size(in KB)", text="size(in KB)", anchor=tk.CENTER)
         my_table.heading("Path", text="Path", anchor=tk.CENTER)
+
         my_table.bind("<Double-1>", OnDoubleClick)
-        #my_table.insert(parent='', index='end', iid=0, text='', values=('1', 'title1', 'Band', 'Bitrate', 'size,', 'Path'))
+        my_table.bind("<Double-2>", OnDoubleClickRemove)
+        #my_table.insert(parent='', index='end', iid=0, text='', values=('1', 'title1', 'Band', 'Bitrate', 'size,', 'Path','Delete'))
     # end
 
     global progress
@@ -151,7 +166,7 @@ def gui_start():
 
     label_statistic_files.pack(anchor=W)
     label_statistic_found_duplicates.pack(anchor=W)
-    label_frame_statistic.place(width=130, height=270, x=0, y=50)
+    label_frame_statistic.place(width=130, height=320, x=0, y=50)
 
     # pack buttons
     selected_folder_bt.pack(anchor=W)
@@ -166,6 +181,12 @@ def gui_start():
     label.pack(anchor=W)
     progress.pack(anchor=W)
     result_frame.pack(side=BOTTOM, anchor=S)
+
+    label_instructions = LabelFrame(label_frame, text="Instructions")
+    label_instructions.pack(anchor=W)
+    instructions = tk.Label(
+        label_instructions, text="1.Double clik LPM opened file\n 2.Double click PPM remove file")
+    instructions.pack()
 
     create_table()
 
