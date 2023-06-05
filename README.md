@@ -9,4 +9,14 @@ Program compared files in format
 - FLAC
 - MP3
 
-![Logo](https://github.com/Vrozax/MusicDuplicateFinder---GUI/blob/Images/music.jpg?raw=true)
+and hows duplicates in the table for comparison
+![Logo](https://github.com/Vrozax/MusicDuplicateFinder-GUI/blob/Images/Zrzut%20ekranu%202023-06-5%20o%2013.42.33.png?raw=true)
+
+
+
+## Library used 🔧
+
+| Library                                                  | Description                              |
+| ------------------------------------------------------- | ---------------------------------------- |
+| [TinyTag](https://github.com/devsnd/tinytag)                        | tinytag is a library for reading music meta data of most common audio files in pure python|
+
