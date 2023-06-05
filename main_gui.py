@@ -39,7 +39,7 @@ def gui_start():
             counter += 1
 
     def start():
-
+        progress["text"] = "Work in progress"
         for i in my_table.get_children():
             my_table.delete(i)
 
@@ -123,10 +123,8 @@ def gui_start():
         my_table.heading("Path", text="Path", anchor=tk.CENTER)
 
         my_table.bind("<Double-1>", OnDoubleClick)
-        #windows ppm Double-3, MacOsX magic mouse Double-2
         my_table.bind("<Double-2>", OnDoubleClickRemove)
-        my_table.bind("<Double-3>", OnDoubleClickRemove)
-        #my_table.insert(parent='', index='end', iid=0, text='', values=('1', 'title1', 'Band', 'Bitrate', 'size,', 'Path'))
+        #my_table.insert(parent='', index='end', iid=0, text='', values=('1', 'title1', 'Band', 'Bitrate', 'size,', 'Path','Delete'))
     # end
 
     global progress
@@ -151,9 +149,9 @@ def gui_start():
     label_frame.pack(side=LEFT, anchor=NW)
 
     selected_folder_bt = ttk.Button(
-        label_frame, text="select folder", command=select_folder, width=12)
+        label_frame, text="Select folder", command=select_folder, width=12)
     selected_folder_text = tk.Label(label_frame, text="Selected folder:None")
-    start_bt = ttk.Button(label_frame, text="start",
+    start_bt = ttk.Button(label_frame, text="Start",
                           command=threading, width=12)
 
     # labelFrame statistic
@@ -176,18 +174,18 @@ def gui_start():
 
     # table result
     result_frame = tk.Frame(master=label_frame)
-    label = tk.Label(master=result_frame, text="Result:")
+    #label = tk.Label(master=result_frame, text="Result:")
     progress = ttk.Label(master=result_frame, text="Status:Not started.")
 
     # pack
-    label.pack(anchor=W)
+    #label.pack(anchor=W)
     progress.pack(anchor=W)
     result_frame.pack(side=BOTTOM, anchor=S)
 
     label_instructions = LabelFrame(label_frame, text="Instructions")
     label_instructions.pack(anchor=W)
     instructions = tk.Label(
-        label_instructions, text="1.Double clik LPM opened file\n 2.Double click PPM remove file")
+        label_instructions, text="     Double clik LPM opened file\n \tDouble click Scroll wheel remove file")
     instructions.pack()
 
     create_table()
