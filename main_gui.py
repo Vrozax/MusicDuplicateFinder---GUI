@@ -123,10 +123,8 @@ def gui_start():
         my_table.heading("Path", text="Path", anchor=tk.CENTER)
 
         my_table.bind("<Double-1>", OnDoubleClick)
-        #windows ppm Double-3, MacOsX magic mouse Double-2
-        
-        my_table.bind("<Double-3>", OnDoubleClickRemove)
-        #my_table.insert(parent='', index='end', iid=0, text='', values=('1', 'title1', 'Band', 'Bitrate', 'size,', 'Path'))
+        my_table.bind("<Double-2>", OnDoubleClickRemove)
+        #my_table.insert(parent='', index='end', iid=0, text='', values=('1', 'title1', 'Band', 'Bitrate', 'size,', 'Path','Delete'))
     # end
 
     global progress
