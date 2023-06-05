@@ -185,7 +185,7 @@ def gui_start():
     label_instructions = LabelFrame(label_frame, text="Instructions")
     label_instructions.pack(anchor=W)
     instructions = tk.Label(
-        label_instructions, text="1.Double clik LPM opened file\n 2.Double click PPM remove file")
+        label_instructions, text="     Double clik LPM opened file\n \tDouble click Scroll wheel remove file")
     instructions.pack()
 
     create_table()
